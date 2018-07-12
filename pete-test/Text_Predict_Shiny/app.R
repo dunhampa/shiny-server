@@ -13,21 +13,20 @@ library(shiny)
 ui <- fluidPage(
   
   # Copy the line below to make a text input box
-  textInput("text", label = h3("Text input"), value = ""),
+  textInput("text", label = h3("Enter Text Here:"), value = ""),
   
   hr(),
+  h4("Predicted Next Word:"),
   textOutput("selected_var"),
   fluidRow(column(3, verbatimTextOutput("value")))
   
 )
 
-prepath<-getwd()
-LoadCompactPredict<-function(){
-  load(paste0(prepath,"/CompactPredictTB.Rda"), .GlobalEnv)
-  load(paste0(prepath,"/predict_for_null.Rda"), .GlobalEnv)
-}
-LoadCompactPredict()
+load("CompactPredictTB.Rda")
+load("predict_for_null.Rda")
+
 predict.tb<-Compact.Predict.TB
+#predict.tb<-ThirtyB
 
 #inputToPass<-input$text
 Predict_Return<-function(input){
@@ -62,7 +61,7 @@ Predict_Return<-function(input){
     
     #Backing off to 1 word
     if(nrow(predict_return)<1){
-      predict_return<-predict.tb[predict.tb$Ngram_Input==backoff_2,]
+      predict_return<-predict.tb[predict.tb$Ngram_Input==backoff_1,]
       
       if(nrow(predict_return)<1){
         #Backing off to common words
