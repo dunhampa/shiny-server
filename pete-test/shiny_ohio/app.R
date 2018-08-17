@@ -13,7 +13,28 @@ ui <- fluidPage(
     tags$style(HTML(".leaflet-container { background: #fff; }"))
   ),
   tags$style(type = "text/css", "#myMap {height: calc(100vh - 80px) !important;}"),
-  leafletOutput("myMap")
+  
+  titlePanel("Hello Shiny!"),
+  
+  sidebarLayout(
+    
+    sidebarPanel(
+      sliderInput("obs", "Number of observations:",  
+                  min = 1, max = 1000, value = 500)
+    ),
+    
+    mainPanel(
+      leafletOutput("myMap")
+    )
+  
+  
+  
+  
+  )
+  
+  
+  
+ 
 )
 
 # Server logic
@@ -45,7 +66,9 @@ server <- function(input, output) {
                                                       bringToFront = TRUE),
                   popup=~NAME)
     print("here")
-    map
+    #setView(11, 49,  zoom = 9)
+    #map$center<-list(lng=-82.7, lat=35.7)
+    map<-map %>% setView(-82, 38.9,  zoom = 7)
   }
   
   output$myMap <- renderLeaflet({
@@ -56,7 +79,11 @@ server <- function(input, output) {
   
   observeEvent(input$myMap_shape_click, { # update the location selectInput on map clicks
     p <- input$myMap_shape_click
+    p2<-input$myMap_center
+    p3<-input$myMap_zoom
     print(p)
+    print(str(p2))
+    print(str(p3))
   }) 
   
   
