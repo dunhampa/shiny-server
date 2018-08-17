@@ -40,7 +40,7 @@ ui <- fluidPage(
 # Server logic
 server <- function(input, output) {
   
-  
+  birthdata<-read.csv("ReportOutput-BirthWeight.csv", stringsAsFactors = FALSE)
   
   
   
@@ -52,19 +52,25 @@ server <- function(input, output) {
     Statekey<-read.csv('STATEFPtoSTATENAME_Key.csv', colClasses=c('character'))
     states<-merge(x=states, y=Statekey, by="STATEFP", all=TRUE)
     
+    
     neStates <- subset(states, states$STATENAME %in% c(
       "Ohio"
     ))
     
-    states<-merge(x=states, y=Statekey, by="STATEFP", all=TRUE)
+    neStates<-sp::merge(x=neStates, y=birthdata, by.x="NAME", by.y="County", by=x)
+    
+   #Low.Birth<-as.numeric(birthdata$Low.Birth.Count)[1:88]
+   #neStates<-cbind(neStates,Low.Birth)
+    #states<-merge(x=states, y=Statekey, by="STATEFP", all=TRUE)
     map<-leaflet(neStates) %>%
       addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5,
                   opacity = 1.0, fillOpacity = 0.5,
                   layerId = ~NAME,
-                  fillColor = ~colorQuantile("Reds", AWATER)(AWATER),
+                  fillColor = ~colorQuantile("Reds",Low.Birth.Count )(Low.Birth.Count),
                   highlightOptions = highlightOptions(color = "white", weight = 2,
                                                       bringToFront = TRUE),
-                  popup=~NAME)
+                  popup = ~as.factor(paste0(neStates$NAME,",",neStates$Low.Birth.Count,",",neStates$Norm.Birth.Count)))
+
     print("here")
     #setView(11, 49,  zoom = 9)
     #map$center<-list(lng=-82.7, lat=35.7)
