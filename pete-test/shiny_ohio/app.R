@@ -5,7 +5,10 @@ library(magrittr)
 library(leaflet)
 library(jsonlite)
 
-
+#Referrenced:
+#ShinyLeaflet-tutorial/Shiny-leaflet-tutorial.Rmd at master · SimonGoring/ShinyLeaflet-tutorial
+#https://stackoverflow.com/questions/34985889/how-to-get-the-zoom-level-from-the-leaflet-map-in-r-shiny
+#https://stackoverflow.com/questions/42798377/shiny-leaflet-ploygon-click-event
 
 # User interface ----
 ui <- fluidPage(
